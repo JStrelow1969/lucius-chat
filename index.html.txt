@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Lucius vCIO</title>
+</head>
+<body>
+  <h2>Lucius vCIO Chat</h2>
+  <input id="msg" placeholder="Ask a question..." />
+  <button onclick="send()">Send</button>
+  <pre id="out"></pre>
+
+  <script>
+    function send() {
+      fetch("/.netlify/functions/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          message: document.getElementById("msg").value
+        })
+      })
+      .then(r => r.json())
+      .then(d => {
+        document.getElementById("out").textContent = d.reply || d.error;
+      });
+    }
+  </script>
+</body>
+</html>
