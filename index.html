@@ -19,9 +19,26 @@
         })
       })
       .then(r => r.json())
-      .then(d => {
-        document.getElementById("out").textContent = d.reply || d.error;
-      });
+      <script>
+  function send() {
+    fetch("/.netlify/functions/chat", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        message: document.getElementById("msg").value
+      })
+    })
+    .then(res => res.json())
+    .then(data => {
+      document.getElementById("out").textContent =
+        data.reply || data.error || JSON.stringify(data, null, 2);
+    })
+    .catch(err => {
+      document.getElementById("out").textContent = err.toString();
+    });
+  }
+</script>
+
     }
   </script>
 </body>
